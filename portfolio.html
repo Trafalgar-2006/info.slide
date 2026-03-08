@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mohith Akshay Duggirala</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f5f0e8;
+      --ink: #1a1410;
+      --accent: #c0392b;
+      --accent2: #e8622a;
+      --muted: #8a7e72;
+      --border: #d4c9b8;
+      --surface: #ede8de;
+      --white: #faf8f4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'IBM Plex Mono', monospace; cursor: none; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; }
+
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: multiply; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: left 0.12s ease, top 0.12s ease; opacity: 0.5; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid var(--border); background: rgba(245,240,232,0.92); backdrop-filter: blur(8px); }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    #hero { min-height: 100vh; padding: 120px 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .hero-bg-text { position: absolute; bottom: -30px; right: -20px; font-family: 'Bebas Neue', sans-serif; font-size: clamp(120px,18vw,260px); color: transparent; -webkit-text-stroke: 1px var(--border); line-height: 1; pointer-events: none; user-select: none; z-index: 0; }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; }
+    .hero-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(48px,6vw,88px); line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-bio { font-size: 12px; line-height: 2; color: var(--muted); max-width: 400px; margin-bottom: 40px; }
+    .hero-bio strong { color: var(--ink); }
+    .hero-cta { display: inline-flex; align-items: center; gap: 12px; background: var(--ink); color: var(--bg); padding: 14px 28px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, gap 0.2s; }
+    .hero-cta:hover { background: var(--accent); gap: 18px; }
+    .hero-right { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 16px; }
+    .hero-stat { border: 1px solid var(--border); padding: 20px 24px; background: var(--white); display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s, transform 0.2s; }
+    .hero-stat:hover { border-color: var(--accent); transform: translateX(4px); }
+    .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--accent); }
+    .hero-stat-label { font-size: 11px; color: var(--muted); text-align: right; line-height: 1.6; }
+
+    /* SHARED SECTION */
+    section { padding: 100px 48px; border-bottom: 1px solid var(--border); }
+    .section-header { display: flex; align-items: baseline; gap: 20px; margin-bottom: 60px; }
+    .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: var(--accent); letter-spacing: 0.15em; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(32px,4vw,52px); line-height: 1.1; }
+    .section-title em { font-style: italic; color: var(--accent); }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .about-text p { font-size: 13px; line-height: 2.1; color: var(--muted); margin-bottom: 18px; }
+    .about-text strong { color: var(--ink); font-weight: 500; }
+    .about-skills { display: flex; flex-direction: column; gap: 14px; }
+    .skill-row { display: flex; align-items: center; gap: 16px; font-size: 11px; }
+    .skill-label { width: 150px; color: var(--muted); flex-shrink: 0; }
+    .skill-bar-bg { flex: 1; height: 1px; background: var(--border); position: relative; }
+    .skill-bar-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--accent); }
+
+    /* PROJECTS */
+    .projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .project-card { background: var(--bg); padding: 36px 32px; transition: background 0.25s; position: relative; overflow: hidden; }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--accent); transition: height 0.3s ease; }
+    .project-card:hover { background: var(--white); }
+    .project-card:hover::before { height: 100%; }
+    .project-card.wide { grid-column: span 2; }
+    .project-year { font-size: 10px; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 14px; }
+    .project-title { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 12px; line-height: 1.2; }
+    .project-desc { font-size: 11px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .ptag { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--border); color: var(--muted); }
+    .project-link { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap 0.2s; }
+    .project-card:hover .project-link { gap: 10px; }
+
+    /* BLOG */
+    .blog-list { display: flex; flex-direction: column; }
+    .blog-item { display: grid; grid-template-columns: 80px 1fr auto; gap: 32px; align-items: start; padding: 32px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: padding-left 0.25s; }
+    .blog-item:first-child { border-top: 1px solid var(--border); }
+    .blog-item:hover { padding-left: 12px; }
+    .blog-num { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--border); line-height: 1; padding-top: 4px; transition: color 0.2s; }
+    .blog-item:hover .blog-num { color: var(--accent); }
+    .blog-tag { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .blog-title { font-family: 'Playfair Display', serif; font-size: 22px; line-height: 1.2; margin-bottom: 10px; transition: color 0.2s; }
+    .blog-item:hover .blog-title { color: var(--accent); }
+    .blog-excerpt { font-size: 11px; color: var(--muted); line-height: 1.9; max-width: 600px; }
+    .blog-meta { text-align: right; flex-shrink: 0; }
+    .blog-date { font-size: 10px; color: var(--muted); margin-bottom: 6px; }
+    .blog-read { font-size: 10px; color: var(--muted); }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,20,16,0.7); z-index: 800; backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 40px 24px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border: 1px solid var(--border); max-width: 660px; width: 100%; max-height: 82vh; overflow-y: auto; padding: 52px; position: relative; }
+    .modal-close { position: sticky; top: 0; float: right; background: var(--bg); border: 1px solid var(--border); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: background 0.2s; margin-bottom: 16px; }
+    .modal-close:hover { background: var(--accent); color: white; }
+    .modal-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 32px; line-height: 1.15; margin-bottom: 8px; }
+    .modal-date { font-size: 10px; color: var(--muted); margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .modal-body { font-size: 12px; line-height: 2.1; color: var(--muted); }
+    .modal-body p { margin-bottom: 18px; }
+    .modal-body strong { color: var(--ink); font-weight: 500; }
+    .modal-body blockquote { border-left: 2px solid var(--accent); padding: 4px 20px; margin: 24px 0; font-family: 'Playfair Display', serif; font-size: 16px; font-style: italic; color: var(--ink); }
+
+    /* CONTACT */
+    #contact { background: var(--ink); color: var(--bg); border-bottom: none; }
+    #contact .section-title { color: var(--bg); }
+    #contact .section-num { color: var(--accent2); }
+    #contact .section-line { background: #3a3530; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-intro { font-size: 13px; line-height: 2; color: #8a8078; margin-bottom: 32px; }
+    .contact-links { display: flex; flex-direction: column; }
+    .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #3a3530; text-decoration: none; color: var(--bg); transition: color 0.2s, padding-left 0.2s; }
+    .contact-link:hover { color: var(--accent2); padding-left: 8px; }
+    .contact-link-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .contact-link-val { font-size: 11px; color: #8a8078; }
+    .availability { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .avail-dot { width: 8px; height: 8px; background: #4caf74; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .avail-text { font-size: 11px; color: #8a8078; }
+    .contact-quote { font-family: 'Playfair Display', serif; font-size: 22px; font-style: italic; line-height: 1.6; color: var(--bg); }
+
+    footer { background: var(--ink); padding: 24px 48px; display: flex; justify-content: space-between; border-top: 1px solid #3a3530; }
+    footer span { font-size: 10px; color: #4a4038; letter-spacing: 0.1em; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    @media(max-width:900px){
+      #hero{grid-template-columns:1fr;}
+      .about-grid{grid-template-columns:1fr;}
+      .projects-grid{grid-template-columns:1fr;}
+      .project-card.wide{grid-column:span 1;}
+      .contact-grid{grid-template-columns:1fr;}
+      nav{padding:16px 24px;}
+      section{padding:72px 24px;}
+      #hero{padding:100px 24px 60px;}
+      .blog-item{grid-template-columns:48px 1fr;}
+      .blog-meta{display:none;}
+    }
+    ::-webkit-scrollbar{width:3px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--border);}
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="#hero" class="nav-logo">Mohith <span>A.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#blog">Reflections</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ① HERO -->
+<section id="hero">
+  <div class="hero-left fade-up">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1 class="hero-name">Mohith<br/><em>Akshay</em><br/>Duggirala</h1>
+    <p class="hero-bio">Electronics & Computer Engineer at Manipal Institute of Technology. Founder of Webcraft Studios. Building at the intersection of <strong>Computer Vision</strong>, full-stack development, and aerospace AI.</p>
+    <a href="#projects" class="hero-cta">View my work →</a>
+  </div>
+  <div class="hero-right fade-up" style="transition-delay:0.15s">
+    <div class="hero-stat">
+      <div class="hero-stat-num">6k+</div>
+      <div class="hero-stat-label">Synthetic satellite images<br/>generated @ ISRO LEOS</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">22</div>
+      <div class="hero-stat-label">FPS real-time inference<br/>on NVIDIA Jetson</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">90%</div>
+      <div class="hero-stat-label">Accuracy — Bird species<br/>classifier (CNN)</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Client satisfaction rate<br/>Webcraft Studios</div>
+    </div>
+  </div>
+  <div class="hero-bg-text">MAD</div>
+</section>
+
+<!-- ② ABOUT -->
+<section id="about">
+  <div class="section-header fade-up">
+    <span class="section-num">01 —</span>
+    <h2 class="section-title">About <em>me</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid fade-up">
+    <div class="about-text">
+      <p>I'm a second-year <strong>Electronics & Computer Engineering</strong> student at Manipal Institute of Technology, Bangalore — equal parts researcher, builder, and community organiser.</p>
+      <p>At <strong>ISRO LEOS</strong>, I worked on bridging the Sim-to-Real gap for non-cooperative satellite detection — generating thousands of synthetic training images and deploying YOLOv7 on edge hardware at 22 FPS. Outside the lab, I run <strong>Webcraft Studios</strong>, a digital agency delivering full-stack web products for global SaaS clients.</p>
+      <p>I'm also President of <strong>MBOSC</strong> (Manipal Bengaluru Open Source Community), where I spend a lot of time convincing people that contributing to open source is less scary than it looks.</p>
+      <p>My interests live at the edges: the gap between simulation and reality, between a clean design and actual usability, between knowing something and being able to explain it.</p>
+    </div>
+    <div class="about-skills">
+      <div class="skill-row"><span class="skill-label">Computer Vision</span><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:92%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Full-Stack Dev</span><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:88%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Machine Learning</span><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:82%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">UI / UX Design</span><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:78%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Embedded Systems</span><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:72%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Audio ML</span><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:68%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-up">
+    <span class="section-num">02 —</span>
+    <h2 class="section-title"><em>Creations</em> & Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid fade-up">
+    <div class="project-card wide">
+      <div class="project-year">Dec 2025 – Jan 2026</div>
+      <h3 class="project-title">ISRO LEOS — Synthetic Satellite Data Pipeline</h3>
+      <p class="project-desc">Built a procedural synthetic data factory using BlenderProc to generate 6,000+ high-fidelity satellite images. Trained YOLOv7-Segmentation and deployed on NVIDIA Jetson via TensorRT achieving 22 FPS real-time inference. Pioneered a Sim-to-Real roadmap using UE5, NASA SPICE, and GAN-based style transfer.</p>
+      <div class="project-tags"><span class="ptag">Python</span><span class="ptag">YOLOv7</span><span class="ptag">BlenderProc</span><span class="ptag">TensorRT</span><span class="ptag">NVIDIA Jetson</span><span class="ptag">PyTorch</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2025 – Present</div>
+      <h3 class="project-title">Webcraft Studios</h3>
+      <p class="project-desc">Digital agency for global SaaS companies. Clients include Myntra Minis and Str8Fire.io. Performance-driven products with scalable design systems and measurable ROI.</p>
+      <div class="project-tags"><span class="ptag">React</span><span class="ptag">Node.js</span><span class="ptag">AWS</span><span class="ptag">Figma</span></div>
+      <a class="project-link" href="https://webcraftstudios.co.in" target="_blank">Visit site →</a>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2024</div>
+      <h3 class="project-title">Str8Fire.io Platform</h3>
+      <p class="project-desc">Complete SaaS platform with user auth, dashboard analytics, and Stripe payment integration on Next.js + PostgreSQL.</p>
+      <div class="project-tags"><span class="ptag">Next.js</span><span class="ptag">TypeScript</span><span class="ptag">PostgreSQL</span><span class="ptag">Stripe</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2024</div>
+      <h3 class="project-title">Myntra Minis Integration</h3>
+      <p class="project-desc">Custom e-commerce solutions for Myntra's mini-apps ecosystem. Scalable design system improving conversion rates.</p>
+      <div class="project-tags"><span class="ptag">React Native</span><span class="ptag">Firebase</span><span class="ptag">REST APIs</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2023</div>
+      <h3 class="project-title">Bird Sound Species Detector</h3>
+      <p class="project-desc">CNN-based system classifying bird species from audio with 90%+ accuracy using spectrogram analysis.</p>
+      <div class="project-tags"><span class="ptag">TensorFlow</span><span class="ptag">CNNs</span><span class="ptag">Python</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2023</div>
+      <h3 class="project-title">Frog Call Classifier</h3>
+      <p class="project-desc">ML model identifying frog species from field recordings with 85%+ accuracy using MFCC-based feature extraction.</p>
+      <div class="project-tags"><span class="ptag">Python</span><span class="ptag">Librosa</span><span class="ptag">MFCC</span><span class="ptag">Scikit-learn</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ REFLECTIONS / BLOG -->
+<section id="blog">
+  <div class="section-header fade-up">
+    <span class="section-num">03 —</span>
+    <h2 class="section-title"><em>Reflections</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="blog-list fade-up">
+    <div class="blog-item" onclick="openModal('b1')">
+      <div class="blog-num">01</div>
+      <div class="blog-content">
+        <div class="blog-tag">Computer Vision & AI</div>
+        <h3 class="blog-title">The Reality Gap is just vibes, until it isn't</h3>
+        <p class="blog-excerpt">I spent two months training a satellite detection model in synthetic renders and watched it fail on real images. What that taught me about the difference between a model that learns and one that memorises your Blender scene's lighting.</p>
+      </div>
+      <div class="blog-meta"><div class="blog-date">Jan 2026</div><div class="blog-read">6 min read</div></div>
+    </div>
+    <div class="blog-item" onclick="openModal('b2')">
+      <div class="blog-num">02</div>
+      <div class="blog-content">
+        <div class="blog-tag">Open Source & Community</div>
+        <h3 class="blog-title">What running a college open source club actually taught me</h3>
+        <p class="blog-excerpt">It's less about the code and way more about getting people to show up on a Wednesday evening when there's a quiz the next morning.</p>
+      </div>
+      <div class="blog-meta"><div class="blog-date">Nov 2025</div><div class="blog-read">4 min read</div></div>
+    </div>
+    <div class="blog-item" onclick="openModal('b3')">
+      <div class="blog-num">03</div>
+      <div class="blog-content">
+        <div class="blog-tag">Computer Vision & AI</div>
+        <h3 class="blog-title">On shipping a frog classifier at 2am and calling it research</h3>
+        <p class="blog-excerpt">A small story about how a messy audio ML side project made me understand that imperfect first versions aren't a bug — they're the only way anything gets started.</p>
+      </div>
+      <div class="blog-meta"><div class="blog-date">Sep 2025</div><div class="blog-read">3 min read</div></div>
+    </div>
+    <div class="blog-item" onclick="openModal('b4')">
+      <div class="blog-num">04</div>
+      <div class="blog-content">
+        <div class="blog-tag">Open Source & Community</div>
+        <h3 class="blog-title">Why open source is the best thing that happened to my learning</h3>
+        <p class="blog-excerpt">Reading code you didn't write, with no one to explain it to you, is uncomfortable in exactly the right way. Thoughts on self-teaching through contribution.</p>
+      </div>
+      <div class="blog-meta"><div class="blog-date">Aug 2025</div><div class="blog-read">5 min read</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <span class="section-num">04 —</span>
+    <h2 class="section-title"><em>Get</em> in touch</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid fade-up">
+    <div>
+      <p class="contact-intro">I'm always open to interesting conversations — whether that's a project, a collaboration, a research idea, or just a good question about why my YOLOv7 model draws boxes around walls.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:d.mohithakshay@gmail.com">
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-val">d.mohithakshay@gmail.com →</span>
+        </a>
+        <a class="contact-link" href="https://github.com/trafalgar-2006" target="_blank">
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-val">trafalgar-2006 →</span>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/dmohithakshay" target="_blank">
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-val">dmohithakshay →</span>
+        </a>
+        <a class="contact-link" href="https://webcraftstudios.co.in" target="_blank">
+          <span class="contact-link-label">Website</span>
+          <span class="contact-link-val">webcraftstudios.co.in →</span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="availability">
+        <div class="avail-dot"></div>
+        <span class="avail-text">Available for internships & freelance projects</span>
+      </div>
+      <p class="contact-quote">"The best problems are the ones that don't fit neatly inside a single field."</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Mohith Akshay Duggirala</span>
+  <span>Manipal Institute of Technology · Bangalore, IN</span>
+</footer>
+
+<!-- BLOG MODALS -->
+<div class="modal-overlay" id="modal-b1" onclick="if(event.target===this)closeModal('b1')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('b1')">✕</button>
+    <div class="modal-tag">Computer Vision & AI</div>
+    <h2 class="modal-title">The Reality Gap is just vibes, until it isn't</h2>
+    <div class="modal-date">January 2026 · 6 min read</div>
+    <div class="modal-body">
+      <p>When you're generating synthetic training data, everything looks great on paper. Thousands of perfectly labelled images, exact 6-DOF pose annotations, no motion blur, no sensor noise. Your validation loss is beautiful. You feel like a genius.</p>
+      <p>Then you point the camera at an actual satellite mockup and the model confidently draws a bounding box around the wall behind it.</p>
+      <blockquote>The model didn't fail because it was bad. It failed because it learned a world that doesn't exist.</blockquote>
+      <p>This is the <strong>Sim-to-Real gap</strong> — the uncomfortable distance between a 3D render and reality. Lighting differences, surface imperfections, lens distortion, sensor noise. Things that feel like minor details when you're in Blender become catastrophic domain shifts at inference time.</p>
+      <p>What I learned at ISRO LEOS is that you can't shortcut this. You have to be deliberate about making synthetic data dirty. Add random HDR environments. Vary path-tracing parameters. Randomise surface roughness. Make your model see the world slightly broken, because the real world always is.</p>
+      <p>The GAN-based style transfer roadmap I helped design is essentially a translation layer — take renders, make them look like real imagery before the model ever sees them. It's not perfect. But it narrows the gap enough to matter.</p>
+      <p>Most things in engineering are like this. The clean version works in theory. Reality asks harder questions.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-b2" onclick="if(event.target===this)closeModal('b2')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('b2')">✕</button>
+    <div class="modal-tag">Open Source & Community</div>
+    <h2 class="modal-title">What running a college open source club actually taught me</h2>
+    <div class="modal-date">November 2025 · 4 min read</div>
+    <div class="modal-body">
+      <p>I became President of MBOSC expecting to spend most of my time talking about code. Turns out I spend most of my time figuring out why no one replied to the WhatsApp message I sent three days ago.</p>
+      <p>Here's the honest version: <strong>community is logistics, not passion.</strong> You can have the best workshop idea in the world, but if it's on a Friday evening during exam week, you'll be presenting to four people and a ceiling fan.</p>
+      <blockquote>Timing, repetition, and showing people why it matters to them — that's the whole job.</blockquote>
+      <p>The part that surprised me most is how open source contribution is genuinely scary for most people. Not because the code is hard, but because putting your work somewhere public where strangers can judge it takes a specific kind of courage that isn't taught anywhere. A lot of what MBOSC does is just normalising that discomfort.</p>
+      <p>I've seen someone go from "I don't know enough to contribute" to having their first PR merged, and that shift in confidence is worth every awkward meeting where only three people showed up.</p>
+      <p>Running a club taught me more about people than about software. Which, honestly, is probably more useful.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-b3" onclick="if(event.target===this)closeModal('b3')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('b3')">✕</button>
+    <div class="modal-tag">Computer Vision & AI</div>
+    <h2 class="modal-title">On shipping a frog classifier at 2am and calling it research</h2>
+    <div class="modal-date">September 2025 · 3 min read</div>
+    <div class="modal-body">
+      <p>The frog project started because I was procrastinating on something else and found a dataset of field recordings from the Western Ghats. One thing led to another and at 2am I had a working MFCC pipeline that could identify species with 85% accuracy.</p>
+      <p>Was it rigorous? Not particularly. Did I have a research question before I started? Absolutely not. Did I learn more about audio signal processing that night than in the entire previous semester? Yes.</p>
+      <blockquote>The best projects start before you're ready. That's not recklessness — that's the only way curiosity works.</blockquote>
+      <p>I think a lot about how many projects never start because the person is waiting until they know enough. But knowing enough is a moving target. You always know more after you build the thing than before.</p>
+      <p><strong>The messy 2am version is the foundation.</strong> Clean it up later. Or don't — sometimes the messy version teaches you everything you needed.</p>
+      <p>The frog classifier lives on my GitHub, has zero stars, and I am completely fine with that.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-b4" onclick="if(event.target===this)closeModal('b4')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('b4')">✕</button>
+    <div class="modal-tag">Open Source & Community</div>
+    <h2 class="modal-title">Why open source is the best thing that happened to my learning</h2>
+    <div class="modal-date">August 2025 · 5 min read</div>
+    <div class="modal-body">
+      <p>University teaches you to write code that satisfies requirements. Open source teaches you to read code that was written by someone who thought very differently from you, made choices you wouldn't make, and left comments that raise more questions than they answer.</p>
+      <p>That discomfort is the education.</p>
+      <p>When I started contributing, I'd spend an hour understanding one function. Now I can trace unfamiliar codebases in minutes — not because I got smarter, but because I've been lost in enough of them to have a map of how people get lost.</p>
+      <blockquote>Reading code you didn't write — with no one to explain it — is the fastest way to develop engineering judgment.</blockquote>
+      <p>There's also something about the culture. Open source at its best is radically generous. People you'll never meet spent their evenings writing documentation so you wouldn't be confused. That creates an obligation — when you know something, you document it. You answer the issue. You write the test.</p>
+      <p><strong>Knowledge isn't really yours until you've given it away.</strong> That's a lesson I keep coming back to, in code and outside of it.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  });
+
+  // Scroll fade-in
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('visible'));
+
+  // Modals
+  function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+</body>
+</html>
